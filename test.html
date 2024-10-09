@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyst Companion</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        .container {
+            margin: 20px;
+        }
+        .dashboard {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .icon {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            cursor: pointer;
+            width: 120px;
+        }
+        .form, .event-list, .news-list, .published-notes, .tasks {
+            display: none;
+            margin-top: 20px;
+        }
+        .form input, .form select, .form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form button {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+        }
+        .button-group button {
+            margin-top: 10px;
+        }
+        .list {
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+        }
+        h3 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Analyst Companion</h1>
+    </header>
+
+    <div class="container">
+
+        <!-- Dashboard -->
+        <div class="dashboard">
+            <div class="icon" onclick="showSection('client-entry')">Client Entry</div>
+            <div class="icon" onclick="showSection('quick-note')">Quick Note</div>
+            <div class="icon" onclick="showSection('events')">Events</div>
+            <div class="icon" onclick="showSection('recent-news')">Recent News</div>
+            <div class="icon" onclick="showSection('published-reports')">Published Reports</div>
+            <div class="icon" onclick="showSection('tasks')">Tasks</div>
+        </div>
+
+        <!-- Client Entry Section -->
+        <div id="client-entry" class="form">
+            <h3>Client Entry</h3>
+            <table>
+                <tr>
+                    <th>Sr No</th>
+                    <th>Client</th>
+                    <th>Contact</th>
+                    <th>Contact Type</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Kotak</td>
+                    <td>Asit</td>
+                    <td>Phone Call</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>EMKAY</td>
+                    <td>Amit</td>
+                    <td>Teams Meet</td>
+                </tr>
+            </table>
+            <button onclick="showClientEntryForm()">Add Client Entry</button>
+
+            <div id="client-form" style="display:none;">
+                <h4>Add Client Entry</h4>
+                <input type="date" placeholder="Date">
+                <select>
+                    <option>Select Client Contact</option>
+                    <option>Asit</option>
+                    <option>Amit</option>
+                </select>
+                <textarea placeholder="Description"></textarea>
+                <button>Submit</button>
+            </div>
+        </div>
+
+        <!-- Quick Note Section -->
+        <div id="quick-note" class="form">
+            <h3>Quick Note</h3>
+            <select>
+                <option>Select Company</option>
+                <option>Apple</option>
+                <option>Google</option>
+            </select>
+            <div>
+                <input type="checkbox"> Front Page Financials
+                <input type="checkbox"> Price Chart
+                <input type="checkbox"> Disclaimer
+            </div>
+            <textarea placeholder="Enter your note here..."></textarea>
+            <div class="button-group">
+                <button>Preview</button>
+                <button>Submit</button>
+            </div>
+        </div>
+
+        <!-- Events Section -->
+        <div id="events" class="event-list">
+            <h3>Events</h3>
+            <div class="list">Earnings Call for Apple - Date: 2024-10-20</div>
+            <div class="list">Google Annual Meeting - Date: 2024-10-15</div>
+        </div>
+
+        <!-- Recent News Section -->
+        <div id="recent-news" class="news-list">
+            <h3>Recent News</h3>
+            <div class="list">Apple's stock rises as new products launch...</div>
+            <div class="list">Google faces regulatory scrutiny in EU...</div>
+        </div>
+
+        <!-- Published Reports Section -->
+        <div id="published-reports" class="published-notes">
+            <h3>Published Notes</h3>
+            <div class="list">1. 2024-10-01 Apple Analysis</div>
+            <div class="list">2. 2024-09-30 Google Market Trends</div>
+            <div class="button-group">
+                <button>Email</button>
+                <button>WhatsApp</button>
+                <button>Call</button>
+            </div>
+        </div>
+
+        <!-- Tasks Section -->
+        <div id="tasks" class="tasks">
+            <h3>My Tasks</h3>
+            <div class="list">Assigned to Me: Review Apple Report</div>
+            <div class="list">Assigned by Me: Send email to clients</div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript to Show and Hide Sections -->
+    <script>
+        function showSection(section) {
+            // Hide all forms
+            document.querySelectorAll('.form, .event-list, .news-list, .published-notes, .tasks').forEach(function(sec) {
+                sec.style.display = 'none';
+            });
+
+            // Show selected section
+            document.getElementById(section).style.display = 'block';
+        }
+
+        function showClientEntryForm() {
+            document.getElementById('client-form').style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
