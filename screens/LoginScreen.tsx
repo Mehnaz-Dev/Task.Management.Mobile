@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, Alert, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
-import axios from 'axios';
+import { View, TextInput, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { AuthRequest } from '../models/AuthRequest';
+import requestService from '../service/RequestService'; 
+import localStorageService from '../service/LocalStorageService'; 
 import PasswordIcon from '../assetes/svg/PasswordIcon';
 import UsernameIcon from '../assetes/svg/UsernameIcon';
 
@@ -11,33 +13,35 @@ const LoginScreen = () => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const navigation = useNavigation();
-  const validateInputs = () => {
-    if (!username || !password) {
-      setErrorMessage("Username and password can't be empty");
-      return false;
-    }
-    setErrorMessage('');
-    return true;
-  };
 
   const handleLogin = async () => {
-    if (!validateInputs()) return;
-  
     setLoading(true);
+    setErrorMessage('');
+
+    const authRequest: AuthRequest = {
+      userName: username,
+      password: password,
+    };
+
     try {
-      const response = await axios.post('https://your-api-endpoint.com/auth', {
-        username,
-        password,
-      });
-      const token = response.data.token; 
+      const jwtToken = await requestService.postAsync<string>('Authentication/Login', authRequest);
+      if (jwtToken) {
+        await localStorageService.saveUserAsync(jwtToken);
+        const tokenUser = await localStorageService.getUserAsync();
+        // Navigate to the dashboard
+        //navigation.navigate('Dashboard');
+      } else {
+        setErrorMessage('Invalid login credentials');
+      }
     } catch (error) {
-      Alert.alert('Login Failed', 'Invalid username or password');
-    } finally {
-      setLoading(false);
+      setErrorMessage('An error occurred during login');
     }
+    setLoading(false);
   };
 
-  const forgotPass = async () => {};
+  const forgotPass = () => {
+    //navigation.navigate('ForgotPassword');
+  };
 
   return (
     <View style={styles.container}>
@@ -51,8 +55,7 @@ const LoginScreen = () => {
             placeholderTextColor="#FFF"
             value={username}
             onChangeText={setUsername}
-            style={styles.input}
-          />
+            style={styles.input} />
         </View>
         <View style={styles.inputContainer}>
           <PasswordIcon style={styles.icon} />
